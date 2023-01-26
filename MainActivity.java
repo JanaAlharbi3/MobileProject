@@ -1,151 +1,108 @@
-package com.example.test;
-
-import static android.widget.Toast.LENGTH_SHORT;
+package com.example.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.app.Activity;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final  int MY_PERMSSIONS_RROUEST_RECRIVE_SMS = 0;
-    private static final String SMS ="android.permission.RECEIVE_SMS";
-    private static final String SMS_RECEIVED ="android.provider.Telephony.SMS_RECEIVED";
-    TextView Message;
-    model mmodel;
-
-
-     String all,Type,Category,Amount,Date;
-    int t1,t2,c1,c2,a1,a2,d1,d2;
-
-    final SMSbroadcast receiver = new SMSbroadcast() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            super.onReceive(context, intent);
-            try{
-            t1 = msg.indexOf("Type") + 5;
-            if (t1>0){}
-            else{
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            t2 = msg.indexOf("Category");
-            if (t2>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            c1 = msg.indexOf("Category") + 9;
-            if (c1>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            c2 = msg.indexOf("The");
-            if (c2>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            a1 = msg.indexOf("of") + 2;
-            if (a1>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            a2 = msg.indexOf("Store");
-            if (a2>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            d1 = msg.indexOf("On") + 2;
-            if (d1>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-            d2 = msg.indexOf("At");
-            if (d2>0){}
-            else{
-
-                Toast.makeText(MainActivity.this,"Wrong message", LENGTH_SHORT).show();}
-
-
-            Type = msg.substring(t1, t2);
-            Category = msg.substring(c1, c2);
-            Amount = msg.substring(a1, a2);
-
-            Date = msg.substring(d1, d2);
-            all = "" + Type + Category + Amount + Date;
-             mmodel = new model(-1, Type, Amount, Category, Date);
-            Message.setText(mmodel.toString());
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
-            boolean b = dataBaseHelper.insertData(mmodel);
-            Toast.makeText(MainActivity.this,"Message has been received"+b, LENGTH_SHORT).show();} catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(receiver,new IntentFilter(SMS_RECEIVED));
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
-    }
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Message = findViewById(R.id.message);
-
-
-
-       if(ContextCompat.checkSelfPermission(this, SMS)!=PackageManager.PERMISSION_GRANTED)
-       {
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,SMS)){
-
-
-        }
-
-        else {
-          ActivityCompat.requestPermissions(this,new String[]{SMS},MY_PERMSSIONS_RROUEST_RECRIVE_SMS);
-        }
-       }
-
-
     }
 
-    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults) {
+    public void showpopup(View v) {
+        PopupMenu popup = new PopupMenu(this,v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.popup_menu);
+        popup.show();
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
+    }
+    public void showpopup2(View view) {
+        PopupMenu popup2 = new PopupMenu(this,view);
+        popup2.setOnMenuItemClickListener(this);
+        popup2.inflate(R.menu.popup2_menu);
+        popup2.show();
+    }
 
-            case MY_PERMSSIONS_RROUEST_RECRIVE_SMS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item1:
+                Toast.makeText (this, "All clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm1 = new Intent(MainActivity.this,All1.class);
+                startActivity(itemm1);
+                return true;
 
-                    Toast.makeText(this, "Thank you for permitting!", LENGTH_SHORT).show();
-                } else {
+            case R.id.item2:
+                Toast.makeText (this, "Salary clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm2 = new Intent(MainActivity.this,Salary.class);
+                startActivity(itemm2);
+                return true;
 
-                    Toast.makeText(this, "Can't Access Messages", LENGTH_SHORT).show();
-                }
+            case R.id.item3:
+                Toast.makeText (this, "transfer clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm3 = new Intent(MainActivity.this,transfer.class);
+                startActivity(itemm3);
+                return true;
 
+            case R.id.item4:
+                Toast.makeText (this, "All clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm4 = new Intent(MainActivity.this,All2.class);
+                startActivity(itemm4);
+                return true;
+
+            case R.id.item5:
+                Toast.makeText (this, "Purchases clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm5 = new Intent(MainActivity.this,Purchases.class);
+                startActivity(itemm5);
+                return true;
+
+            case R.id.item6:
+                Toast.makeText (this, "transfers clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm6 = new Intent(MainActivity.this,transfers2.class);
+                startActivity(itemm6);
+                return true;
+
+            case R.id.item7:
+                Toast.makeText (this, "investment clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm7 = new Intent(MainActivity.this,transfers2.class);
+                startActivity(itemm7);
+                return true;
+
+            case R.id.item8:
+                Toast.makeText (this, "monthly redemption payments clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm8 = new Intent(MainActivity.this,monthly_r_p.class);
+                startActivity(itemm8);
+                return true;
+
+            case R.id.item9:
+                Toast.makeText (this, "insurance and taxes clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm9 = new Intent(MainActivity.this,insurance.class);
+                startActivity(itemm9);
+                return true;
+
+            case R.id.item10:
+                Toast.makeText (this, "entertainment clicked", Toast.LENGTH_SHORT).show();
+                Intent itemm10 = new Intent(MainActivity.this,entertainment.class);
+                startActivity(itemm10);
+                return true;
+
+            default: return false;
         }
+    }
 
 
-
+    public void Report1(View view2) {
+        Intent report = new Intent(MainActivity.this,report.class);
+        startActivity(report);
     }
 }
